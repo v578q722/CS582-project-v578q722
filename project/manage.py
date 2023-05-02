@@ -448,3 +448,7 @@ from .models import Product
 
 admin.site.register(Product)
 
+from django.apps import AppConfig
+
+class ProductsConfig(AppConfig):
+    name = 'products'
