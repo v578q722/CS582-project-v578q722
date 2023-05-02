@@ -177,4 +177,11 @@ class CourseModelForm(forms.ModelForm):
         if title.lower() == 'abc':
             raise forms.ValidationError("This is not a valid title")
         return title
-    
+
+from django.db import models
+
+# Create your models here.
+class Course(models.Model):
+    title = models.CharField(max_length=120)
+
+from django.test import TestCase   
