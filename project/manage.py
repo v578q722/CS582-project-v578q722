@@ -274,3 +274,20 @@ class CourseUpdateView(CourseObjectMixin, View):
             context['object'] = obj
             context['form'] = form
         return render(request, self.template_name, context)
+    
+class CourseCreateView(View):
+    template_name = "courses/course_create.html" # DetailView
+    def get(self, request, *args, **kwargs):
+        # GET method
+        form = CourseModelForm()
+        context = {"form": form}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        # POST method
+        form = CourseModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            form = CourseModelForm()
+        context = {"form": form}
+        return render(request, self.template_name, context)
