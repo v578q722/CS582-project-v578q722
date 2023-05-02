@@ -207,3 +207,39 @@ urlpatterns = [
     path('<int:id>/update/', CourseUpdateView.as_view(), name='courses-update'),
     path('<int:id>/delete/', CourseDeleteView.as_view(), name='courses-delete'),
 ]
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views import View
+
+from .forms import CourseModelForm
+from .models import Course 
+# BASE VIEW CLass = VIEW
+
+class CourseObjectMixin(object):
+    model = Course
+    def get_object(self):
+        id = self.kwargs.get('id')
+        obj = None
+        if id is not None:
+            obj = get_object_or_404(self.model, id=id)
+        return obj 
+
+class CourseDeleteView(CourseObjectMixin, View):
+    template_name = "courses/course_delete.html" # DetailView
+    def get(self, request, id=None, *args, **kwargs):
+        # GET method
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            context['object'] = obj
+        return render(request, self.template_name, context)
+
+    def post(self, request, id=None,  *args, **kwargs):
+        # POST method
+        context = {}
+        obj = self.get_object()
+        if obj is not None:
+            obj.delete()
+            context['object'] = None
+            return redirect('/courses/')
+        return render(request, self.template_name, context)
