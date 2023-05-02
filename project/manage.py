@@ -531,3 +531,27 @@ urlpatterns = [
     path('<int:id>/update/', product_update_view, name='product-update'),
     path('<int:id>/delete/', product_delete_view, name='product-delete'),
 ]
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .forms import ProductForm
+from .models import Product
+
+def product_create_view(request):
+    form = ProductForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        form = ProductForm()
+    context = {
+        'form': form
+    }
+    return render(request, "products/product_create.html", context)
+
+def product_update_view(request, id=id):
+    obj = get_object_or_404(Product, id=id)
+    form = ProductForm(request.POST or None, instance=obj)
+    if form.is_valid():
+        form.save()
+    context = {
+        'form': form
+    }
+    return render(request, "products/product_create.html", context)
