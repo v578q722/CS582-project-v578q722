@@ -153,3 +153,10 @@ class Migration(migrations.Migration):
             ],
         ),
     ]
+
+from django.contrib import admin
+
+from django.apps import AppConfig
+
+class CoursesConfig(AppConfig):
+    name = 'courses'
